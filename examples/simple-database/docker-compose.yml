@@ -1,0 +1,41 @@
+version: '3.7'
+
+services:
+  db:
+    image: pverscha/unipept-database:1.0.0
+    environment:
+      MYSQL_ROOT_PASSWORD: unipept
+      MYSQL_DATABASE: unipept
+      MYSQL_USER: unipept
+      MYSQL_PASSWORD: unipept
+      DB_TYPES: swissprot
+      DB_SOURCES: https://ftp.expasy.org/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.xml.gz
+      FILTER_TAXA: 33090
+    restart: always
+    ports:
+      - "3306:3306"
+    hostname: mysql
+    volumes:
+      # Volume that's being used to store the MySQL-database data. This directory can contain quite a lot of data!
+      - type: bind
+        source: /Volumes/T7/DBs/results/db_felis
+        target: /var/lib/mysql
+      # Volume that's being used to store the Unipept index. This index is a special kind of structure that can easily
+      # be queried and filtered by taxa (if required). The index will be created on first run of an image (if it is
+      # not yet present in the folder that's mounted) and will greatly increase the build speed of the database.
+      - type: bind
+        source: /Volumes/T7/DBs/index
+        target: /index
+      - type: bind
+        source: /tmp
+        target: /tmp
+  phpmyadmin:
+    depends_on:
+      - db
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - '8080:80'
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: unipept
+    restart: always
