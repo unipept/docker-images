@@ -22,6 +22,8 @@ FROM mysql:latest
 #   become very large and that it will benefit from very fast storage.
 #   * /tables: Directory that contains the generated database table files (that are used to fill up the constructed
 #   database). These files will typically only be available during the construction process of the container.
+#   * /var/lib/mysql: Directory that will contain the persistent MySQL datafiles. This directory should always be
+#   mounted at the same location in order to start the database.
 ###
 
 LABEL maintainer="Pieter Verschaffelt <pieter.verschaffelt@ugent.be>"
@@ -64,11 +66,11 @@ RUN ldconfig
 # Using this branch is a temporary solution and should no longer be required when the latest changes are merged with
 # the make-database repository.
 RUN git clone https://github.com/unipept/make-database && cd make-database && git checkout feature/cleanup
-RUN mv "make-database" "/make-database"
+COPY "db_entrypoint.sh" "/docker-entrypoint-initdb.d/db_entrypoint.sh"
 
 # Sometimes, these files are copied over from Windows systems and need to be converted into Unix line endings to make
 # sure that these can be properly executed by the container.
-RUN dos2unix /make-database/scripts/**/*.sh /make-database/scripts/**/*.js && chmod u+x /make-database/scripts/*.sh && mv /make-database/scripts/db_entrypoint.sh /docker-entrypoint-initdb.d/db_entrypoint.sh
+RUN dos2unix /make-database/scripts/**/*.sh /make-database/scripts/**/*.js && chmod u+x /make-database/scripts/*.sh
 
 COPY "config/custom_mysql_config.cnf" "/etc/mysql/conf.d/custom_mysql_config.cnf"
 RUN chmod a-w "/etc/mysql/conf.d/custom_mysql_config.cnf"
@@ -82,4 +84,4 @@ ENV DB_TYPES swissprot
 ENV DB_SOURCES https://ftp.expasy.org/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.xml.gz
 # List of taxa (separated by comma's) for which all children (and the nodes themselves) should be present in the final
 # database.
-ENV FILTER_TAXA 33090
+ENV FILTER_TAXA 9682
