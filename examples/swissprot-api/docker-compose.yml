@@ -10,7 +10,7 @@ services:
       MYSQL_PASSWORD: unipept
       DB_TYPES: swissprot
       DB_SOURCES: https://ftp.expasy.org/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.xml.gz
-      FILTER_TAXA: 1294634
+      FILTER_TAXA: 1
     restart: always
     ports:
       - "3306:3306"
@@ -31,13 +31,11 @@ services:
       - type: bind
         source: /tmp
         target: /tmp
-  phpmyadmin:
+  web:
     depends_on:
       - db
-    image: phpmyadmin/phpmyadmin
+    image: pverscha/unipept-web:1.0.0
     ports:
-      - '8080:80'
-    environment:
-      PMA_HOST: db
-      MYSQL_ROOT_PASSWORD: unipept
+      # Expose host port 80 on container port 3000
+      - "80:3000"
     restart: always

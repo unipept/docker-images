@@ -3,7 +3,7 @@ FROM mysql:latest
 ###
 # Name: unipept-database
 #
-# This Dockerfile can be used to build a image that contains everything required to spin up a container with a
+# This Dockerfile can be used to build an image that contains everything required to spin up a container with a
 # functioning Unipept database (the database will be filled with all of the required data).
 #
 # Parameters (are being referenced as environment variables in the Dockerfile)
