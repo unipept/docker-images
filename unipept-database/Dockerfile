@@ -63,9 +63,7 @@ RUN wget https://curl.haxx.se/download/curl-7.68.0.zip && \
 # Configure curl to use the newly builded libcurl
 RUN ldconfig
 
-# Using this branch is a temporary solution and should no longer be required when the latest changes are merged with
-# the make-database repository.
-RUN git clone https://github.com/unipept/make-database && cd make-database && git checkout feature/cleanup
+RUN git clone https://github.com/unipept/make-database && cd make-database
 COPY "db_entrypoint.sh" "/docker-entrypoint-initdb.d/db_entrypoint.sh"
 
 # Sometimes, these files are copied over from Windows systems and need to be converted into Unix line endings to make

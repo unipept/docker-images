@@ -10,7 +10,7 @@ services:
       MYSQL_PASSWORD: unipept
       DB_TYPES: swissprot
       DB_SOURCES: https://ftp.expasy.org/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.xml.gz
-      FILTER_TAXA: 1294634
+      FILTER_TAXA: 1
     restart: always
     ports:
       - "3306:3306"
