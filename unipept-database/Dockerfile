@@ -1,4 +1,4 @@
-FROM mysql:latest
+FROM mysql:8.0.28
 
 ###
 # Name: unipept-database
@@ -14,6 +14,7 @@ FROM mysql:latest
 #   * FILTER_TAXA: a list of NCBI taxon ID's (comma-delimited) by which the resulting Unipept database should be
 #   filtered. Only UniProt-entries that are associated with these ID's (or their children in the NCBI taxonomy
 #   tree) are being kept during the build process.
+#   * VERBOSE: Should all debugging information be printed during the Docker build? Is false by default.
 #
 # Mount-points:
 #   * /index: Directory that will hold the Unipept database index. If this index is present from previous database
@@ -83,3 +84,5 @@ ENV DB_SOURCES https://ftp.expasy.org/databases/uniprot/current_release/knowledg
 # List of taxa (separated by comma's) for which all children (and the nodes themselves) should be present in the final
 # database.
 ENV FILTER_TAXA 9682
+
+ENV VERBOSE false
