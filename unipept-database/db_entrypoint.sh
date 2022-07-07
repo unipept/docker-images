@@ -8,7 +8,7 @@ set -o pipefail
 # This command should produce tsv.gz files that can later on be inserted into the database.
 cd "/make-database"
 
-if [ $VERBOSE -eq "true" ]
+if [ $VERBOSE = "true" ]
 then
     VERBOSE="-v "
 else
