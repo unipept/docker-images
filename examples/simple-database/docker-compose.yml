@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   db:
-    image: pverscha/unipept-database:1.0.0
+    image: pverscha/unipept-database:1.0.2
     environment:
       MYSQL_ROOT_PASSWORD: unipept
       MYSQL_DATABASE: unipept
@@ -11,6 +11,7 @@ services:
       DB_TYPES: swissprot
       DB_SOURCES: https://ftp.expasy.org/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.xml.gz
       FILTER_TAXA: 1
+      VERBOSE: true
     restart: always
     ports:
       - "3306:3306"
