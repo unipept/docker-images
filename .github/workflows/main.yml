@@ -20,8 +20,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Navigate to database directory
-        run: cd "unipept-database"
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
@@ -47,6 +45,7 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
+          file: 'unipept-database/Dockerfile'
           tags: ${{ steps.metadata.outputs.tags }}
           labels: ${{ steps.metadata.outputs.labels }}
           
