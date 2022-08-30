@@ -1,4 +1,4 @@
-FROM mysql:8.0.28
+FROM mariadb:jammy
 
 ###
 # Name: unipept-database
@@ -7,7 +7,7 @@ FROM mysql:8.0.28
 # functioning Unipept database (the database will be filled with all of the required data).
 #
 # Parameters (are being referenced as environment variables in the Dockerfile)
-#   * DB_TYPES: names of the database sources that are to be parsed by this script (comma-delimited, one name per 
+#   * DB_TYPES: names of the database sources that are to be parsed by this script (comma-delimited, one name per
 #   source).
 #   * DB_SOURCES: list of URLs that point to the database sources that should be used as a basis to construct the
 #   database.
@@ -30,8 +30,8 @@ FROM mysql:8.0.28
 LABEL maintainer="Pieter Verschaffelt <pieter.verschaffelt@ugent.be>"
 
 RUN mkdir -p /usr/share/man/man1
-RUN apt-get update && \
-    apt-get install -y \
+RUN apt update && \
+    apt install -y \
     default-jdk \
     git \
     dos2unix \
@@ -87,3 +87,5 @@ ENV DB_SOURCES https://ftp.expasy.org/databases/uniprot/current_release/knowledg
 ENV FILTER_TAXA 9682
 
 ENV VERBOSE false
+
+EXPOSE 3306
