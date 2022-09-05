@@ -1,11 +1,11 @@
-FROM ruby:2.7.5-bullseye
+FROM ruby:2.7.6-bullseye
 
 ###
 # Name: unipept-web
 #
 # This Dockerfile can be used to build an image that contains all required configuration to start up a Unipept web
 # server that can handle all requests compatible with the Unipept API. Note that a valid unipept-database should be
-# running at the same time as this container. This container queries the MySQL-database running in this separate 
+# running at the same time as this container. This container queries the MySQL-database running in this separate
 # VM.
 #
 # Parameters:
