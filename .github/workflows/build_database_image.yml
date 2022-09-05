@@ -10,10 +10,10 @@ on:
       - 'main'
     tags:
       - 'v*.*.*'
-  
+
 permissions:
   packages: write
-  
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -38,6 +38,7 @@ jobs:
             ghcr.io/unipept/unipept-database
           tags: |
             type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
             type=sha
       - name: Build and push
         uses: docker/build-push-action@v3
@@ -48,5 +49,5 @@ jobs:
           file: 'unipept-database/Dockerfile'
           tags: ${{ steps.metadata.outputs.tags }}
           labels: ${{ steps.metadata.outputs.labels }}
-          
-      
+
+
