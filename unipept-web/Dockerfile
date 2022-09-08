@@ -32,8 +32,8 @@ RUN apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
 
 RUN git clone https://github.com/unipept/unipept.git
-RUN cd unipept && git checkout master && gem install bundler
+RUN cd unipept && git checkout production && gem install bundler
 RUN cd unipept && bundle install
 RUN cd unipept/config && sed -i "s/host: 127.0.0.1/host: host.docker.internal/" database.yml
 
-CMD cd unipept && bundle exec rails server -b 0.0.0.0
+CMD cd unipept && bundle exec rails server -b 0.0.0.0 -e production
