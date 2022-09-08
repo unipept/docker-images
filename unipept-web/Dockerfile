@@ -36,5 +36,7 @@ RUN cd unipept && git checkout master && gem install bundler
 RUN cd unipept/config && printf "  host: host.docker.internal\n  port: 3306\n" >> database.yml
 RUN cd unipept && bundle install
 
+ENV RAILS_ENV=production
+ENV DB_PORT=3300
 
-CMD cd unipept && bundle exec rails server -b 0.0.0.0 -e production
+CMD cd unipept && sed -i "s/port: 3306/port: $DB_PORT/g" config/database.yml && bundle exec rails server -b 0.0.0.0 -e production
