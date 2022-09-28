@@ -20,17 +20,17 @@ services:
       # Volume that's being used to store the MySQL-database data. This directory can contain quite a lot of data!
       - type: bind
         # Change this to a folder on you hard drive where you want the actual database to be stored.
-        source: /Volumes/T7/16S
+        source: ~/Documents/Unipept/Databases/data
         target: /var/lib/mysql
       # Volume that's being used to store the Unipept index. This index is a special kind of structure that can easily
       # be queried and filtered by taxa (if required). The index will be created on first run of an image (if it is
       # not yet present in the folder that's mounted) and will greatly increase the build speed of the database.
       - type: bind
         # Change this to a folder on your hard drive where the Unipept index could be stored.
-        source: /Volumes/T7/Test/index
+        source: ~/Documents/Unipept/Databases/index
         target: /index
       - type: bind
-        source: /Volumes/T7/Test/tmp
+        source: ~/Documents/Unipept/Databases/tmp
         target: /tmp
   phpmyadmin:
     depends_on:
