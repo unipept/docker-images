@@ -15,7 +15,7 @@ else
     VERBOSE=""
 fi
 
-echo "unipept" | su -c "./scripts/build_database.sh $VERBOSE-f $FILTER_TAXA -i '/index' -d '/tmp' database $DB_TYPES $DB_SOURCES '/tmp/tables'" root
+echo "unipept" | su -c "./scripts/build_database.sh $VERBOSE-f $FILTER_TAXA -i '/index' -d '/tmp' -m $SORT_MEMORY database $DB_TYPES $DB_SOURCES '/tmp/tables'" root
 
 echo "***** START LOADING TABLES *****"
 
