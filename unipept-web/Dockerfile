@@ -31,12 +31,12 @@ RUN apt-get autoremove -y \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/*
 
-RUN git clone https://github.com/unipept/unipept.git
-RUN cd unipept && git checkout master && gem install bundler
-RUN cd unipept/config && printf "  host: host.docker.internal\n  port: 3306\n" >> database.yml
-RUN cd unipept && bundle install
+RUN git clone https://github.com/unipept/unipept-api.git
+RUN cd unipept-api && git checkout main && gem install bundler
+RUN cd unipept-api/config && printf "  host: host.docker.internal\n  port: 3306\n" >> database.yml
+RUN cd unipept-api && bundle install
 
 ENV RAILS_ENV=production
 ENV DB_PORT=3300
 
-CMD cd unipept && sed -i "s/port: 3306/port: $DB_PORT/g" config/database.yml && bundle exec rails server -b 0.0.0.0 -e production
+CMD cd unipept-api && sed -i "s/port: 3306/port: $DB_PORT/g" config/database.yml && bundle exec rails server -b 0.0.0.0 -e production
