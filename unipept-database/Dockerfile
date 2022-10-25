@@ -65,7 +65,7 @@ RUN apt update && \
 # Configure curl to use the newly builded libcurl
 #RUN ldconfig
 
-RUN git clone https://github.com/unipept/make-database && cd make-database
+RUN git clone https://github.com/unipept/make-database && git checkout "temp/no-integrity-check" && cd make-database
 COPY "db_entrypoint.sh" "/docker-entrypoint-initdb.d/db_entrypoint.sh"
 
 # Sometimes, these files are copied over from Windows systems and need to be converted into Unix line endings to make
