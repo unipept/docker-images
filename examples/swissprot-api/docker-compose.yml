@@ -34,7 +34,9 @@ services:
   web:
     depends_on:
       - db
-    image: pverscha/unipept-web:1.0.0
+    image: ghcr.io/unipept/unipept-web:latest
+    environment:
+      DB_PORT:3306
     ports:
       # Expose host port 80 on container port 3000
       - "80:3000"
