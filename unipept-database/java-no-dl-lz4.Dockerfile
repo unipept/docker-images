@@ -79,28 +79,6 @@ RUN chmod a-w "/etc/mysql/conf.d/custom_mysql_config.cnf"
 
 RUN echo 'root:unipept' | chpasswd
 
-## To keep the next commands short, use
-#WORKDIR /make-database/scripts/helper_scripts/new-parsers
-#
-## Install Rust toolchain (https://rustup.rs/)
-#RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y
-#RUN echo 'source $HOME/.cargo/env' >> $HOME/.bashrc
-#ENV PATH="/root/.cargo/bin:${PATH}"
-#
-## Compile Rust binaries
-#RUN cargo build --release
-#
-## Copy binaries to helper_scripts folder
-#RUN mv target/release/functional-analysis ../functional-analysis
-#RUN mv target/release/taxons-uniprots-tables ../taxons-uniprots-tables
-#RUN mv target/release/xml-parser ../xml-parser
-#RUN rm -rf target/
-#
-## Uninstall Rust again to keep the image size down (we no longer need it)
-#RUN rustup self uninstall -y
-#
-#WORKDIR /
-
 # Database types that should be processed by this image. Delimited by comma's.
 ENV DB_TYPES swissprot
 # Database URLs that should be downloaded and processed by this container. Delimited by comma's, n'th item in this list
