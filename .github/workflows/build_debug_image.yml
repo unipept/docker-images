@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        image: ["java-no-dl", "java-no-dl-lz4", "rust-no-dl-lz4"]
+        image: ["java-no-dl", "java-no-dl-lz4", "rust-no-dl-lz4", "rust-no-dl-lz4-z-truc"]
     steps:
       - name: Checkout
         uses: actions/checkout@v2

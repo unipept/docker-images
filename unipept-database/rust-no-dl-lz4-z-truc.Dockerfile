@@ -66,7 +66,7 @@ RUN apt update && \
 # Configure curl to use the newly builded libcurl
 #RUN ldconfig
 
-RUN git clone https://github.com/stijndcl/unipept-database make-database && cd make-database && git checkout feature/rust-build-db-no-dl-lz4 && git pull
+RUN git clone https://github.com/stijndcl/unipept-database make-database && cd make-database && git checkout feature/z-truc && git pull
 COPY "db_entrypoint.sh" "/docker-entrypoint-initdb.d/db_entrypoint.sh"
 COPY "uniprot_sprot.xml.gz" "/uniprot_sprot.xml.gz"
 
