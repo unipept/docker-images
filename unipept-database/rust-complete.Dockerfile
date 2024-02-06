@@ -75,28 +75,17 @@ RUN chmod a-w "/etc/mysql/conf.d/custom_mysql_config.cnf"
 
 RUN echo 'root:unipept' | chpasswd
 
-# To keep the next commands short, use
-WORKDIR /make-database/scripts/helper_scripts/unipept-database-rs
-
 # Install Rust toolchain (https://rustup.rs/)
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y
 RUN echo 'source $HOME/.cargo/env' >> $HOME/.bashrc
 ENV PATH="/root/.cargo/bin:${PATH}"
 
 # Compile Rust binaries
-RUN cargo build --release
-
-# Copy binaries to helper_scripts folder
-RUN mv target/release/functional-analysis ../
-RUN mv target/release/lcas ../
-RUN mv target/release/taxa-by-chunk ../
-RUN mv target/release/taxons-lineages ../
-RUN mv target/release/taxons-uniprots-tables ../
-RUN mv target/release/write-to-chunk ../
-RUN mv target/release/xml-parser ../
+WORKDIR /make-database/scripts/
+RUN build_binaries.sh
 
 # Clean up build artifacts so they don't end up in the image
-RUN rm -rf target/
+RUN rm -rf helper_scripts/unipept-database-rs/target/
 
 # Uninstall Rust again to keep the image size down
 RUN rustup self uninstall -y
