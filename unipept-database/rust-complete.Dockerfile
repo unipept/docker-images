@@ -81,16 +81,13 @@ RUN echo 'source $HOME/.cargo/env' >> $HOME/.bashrc
 ENV PATH="/root/.cargo/bin:${PATH}"
 
 # Compile Rust binaries
-WORKDIR /make-database/scripts/
-RUN build_binaries.sh
+RUN /make-database/scripts/build_binaries.sh
 
 # Clean up build artifacts so they don't end up in the image
-RUN rm -rf helper_scripts/unipept-database-rs/target/
+RUN rm -rf /make-database/scripts/helper_scripts/unipept-database-rs/target/
 
 # Uninstall Rust again to keep the image size down
 RUN rustup self uninstall -y
-
-WORKDIR /
 
 # Database types that should be processed by this image. Delimited by comma's.
 ENV DB_TYPES swissprot
