@@ -50,25 +50,12 @@ RUN apt update && \
     sudo \
     lz4
 
-# Now, build curl from source to upgrade it to version 7.68.0 (instead of the default 7.52.0 in this image)
-# This fixes https://github.com/curl/curl/issues/3750 which is present in older versions of curl
-#RUN wget https://curl.haxx.se/download/curl-7.68.0.zip && \
-#    unzip curl-7.68.0.zip && \
-#    cd curl-7.68.0 && \
-#    ./configure --disable-dependency-tracking --with-ssl && \
-#    make && \
-#    make install && \
-#    cd "/"
-
-# Configure curl to use the newly builded libcurl
-#RUN ldconfig
-
-RUN git clone -b feature/pure-rust --depth 1 https://github.com/stijndcl/unipept-database make-database
+RUN git clone -b feature/stijn-changes --depth 1 https://github.com/unipept/unipept-database
 COPY "db_entrypoint.sh" "/docker-entrypoint-initdb.d/db_entrypoint.sh"
 
 # Sometimes, these files are copied over from Windows systems and need to be converted into Unix line endings to make
 # sure that these can be properly executed by the container.
-RUN dos2unix /make-database/scripts/**/*.sh && chmod u+x /make-database/scripts/*.sh
+RUN dos2unix /unipept-database/scripts/**/*.sh && chmod u+x /unipept-database/scripts/*.sh
 
 COPY "config/custom_mysql_config.cnf" "/etc/mysql/conf.d/custom_mysql_config.cnf"
 RUN chmod a-w "/etc/mysql/conf.d/custom_mysql_config.cnf"
@@ -81,10 +68,10 @@ RUN echo 'source $HOME/.cargo/env' >> $HOME/.bashrc
 ENV PATH="/root/.cargo/bin:${PATH}"
 
 # Compile Rust binaries
-RUN /make-database/scripts/build_binaries.sh
+RUN /unipept-database/scripts/build_binaries.sh
 
 # Clean up build artifacts so they don't end up in the image
-RUN rm -rf /make-database/scripts/helper_scripts/unipept-database-rs/target/
+RUN rm -rf /unipept-database/scripts/helper_scripts/unipept-database-rs/target/
 
 # Uninstall Rust again to keep the image size down
 RUN rustup self uninstall -y
