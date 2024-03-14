@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   db:
-    image: ghcr.io/unipept/unipept-database:latest
+    image: 9ec2a9f4d4aa
     environment:
       MYSQL_ROOT_PASSWORD: unipept
       MYSQL_DATABASE: unipept
