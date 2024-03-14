@@ -32,11 +32,8 @@ LABEL maintainer="Pieter Verschaffelt <pieter.verschaffelt@ugent.be>"
 RUN mkdir -p /usr/share/man/man1
 RUN apt update && \
     apt install -y \
-    default-jdk \
     git \
     dos2unix \
-    maven \
-    make \
     wget \
     unzip \
     expect \
@@ -46,45 +43,50 @@ RUN apt update && \
     libssl-dev \
     uuid-runtime \
     pv \
-    nodejs \
     pigz \
     parallel \
     curl \
-    sudo
+    sudo \
+    lz4
 
-# Now, build curl from source to upgrade it to version 7.68.0 (instead of the default 7.52.0 in this image)
-# This fixes https://github.com/curl/curl/issues/3750 which is present in older versions of curl
-#RUN wget https://curl.haxx.se/download/curl-7.68.0.zip && \
-#    unzip curl-7.68.0.zip && \
-#    cd curl-7.68.0 && \
-#    ./configure --disable-dependency-tracking --with-ssl && \
-#    make && \
-#    make install && \
-#    cd "/"
 
 # Configure curl to use the newly builded libcurl
 #RUN ldconfig
 
-RUN git clone https://github.com/unipept/make-database && cd make-database
+RUN git clone --depth 1 https://github.com/unipept/unipept-database
 COPY "db_entrypoint.sh" "/docker-entrypoint-initdb.d/db_entrypoint.sh"
 
 # Sometimes, these files are copied over from Windows systems and need to be converted into Unix line endings to make
 # sure that these can be properly executed by the container.
-RUN dos2unix /make-database/scripts/**/*.sh /make-database/scripts/**/*.js && chmod u+x /make-database/scripts/*.sh
+RUN dos2unix /unipept-database/scripts/**/*.sh && chmod u+x /unipept-database/scripts/*.sh
 
 COPY "config/custom_mysql_config.cnf" "/etc/mysql/conf.d/custom_mysql_config.cnf"
 RUN chmod a-w "/etc/mysql/conf.d/custom_mysql_config.cnf"
 
 RUN echo 'root:unipept' | chpasswd
 
+# Install Rust toolchain (https://rustup.rs/)
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y
+RUN echo 'source $HOME/.cargo/env' >> $HOME/.bashrc
+ENV PATH="/root/.cargo/bin:${PATH}"
+
+# Compile Rust binaries
+RUN /unipept-database/scripts/build_binaries.sh
+
+# Clean up build artifacts so they don't end up in the image
+RUN rm -rf /unipept-database/scripts/helper_scripts/unipept-database-rs/target/
+
+# Uninstall Rust again to keep the image size down
+RUN rustup self uninstall -y
+
 # Database types that should be processed by this image. Delimited by comma's.
 ENV DB_TYPES swissprot
 # Database URLs that should be downloaded and processed by this container. Delimited by comma's, n'th item in this list
 # should correspond to n'th db type given in DB_TYPES arg.
-ENV DB_SOURCES https://ftp.expasy.org/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.xml.gz
+ENV DB_SOURCES https://ftp.expasy.org/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.dat.gz
 # List of taxa (separated by comma's) for which all children (and the nodes themselves) should be present in the final
 # database.
-ENV FILTER_TAXA 9682
+ENV FILTER_TAXA 1
 
 ENV VERBOSE false
 

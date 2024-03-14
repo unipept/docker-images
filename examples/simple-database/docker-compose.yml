@@ -2,14 +2,14 @@ version: '3.7'
 
 services:
   db:
-    image: afaef3e70cff
+    image: ghcr.io/unipept/unipept-database:latest
     environment:
       MYSQL_ROOT_PASSWORD: unipept
       MYSQL_DATABASE: unipept
       MYSQL_USER: unipept
       MYSQL_PASSWORD: unipept
       DB_TYPES: swissprot
-      DB_SOURCES: https://ftp.expasy.org/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.xml.gz
+      DB_SOURCES: https://ftp.expasy.org/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.dat.gz
       FILTER_TAXA: 1
       VERBOSE: false
     restart: always
