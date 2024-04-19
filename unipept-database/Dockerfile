@@ -62,7 +62,7 @@ RUN dos2unix /unipept-database/scripts/**/*.sh && chmod u+x /unipept-database/sc
 
 RUN echo 'root:unipept' | chpasswd
 
-ADD rust-binaries /unipept-database/scripts/helper_scripts
+ADD ./rust-binaries /unipept-database/scripts/helper_scripts
 
 # Database types that should be processed by this image. Delimited by comma's.
 ENV DB_TYPES swissprot
