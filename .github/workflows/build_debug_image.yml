@@ -45,10 +45,10 @@ jobs:
           shared-key: ${{ env.CACHE_KEY }}
       - name: Compile Rust binaries
         run: |
-          git clone -b feature/postgres --depth 1 https://github.com/stijndcl/unipept-database/
-          bash ./unipept-database/scripts/build_binaries.sh
+          git clone -b feature/postgres --depth 1 https://github.com/stijndcl/unipept-database/ pipeline-source
+          bash ./pipeline-source/scripts/build_binaries.sh
           mkdir rust-binaries
-          find ./unipept-database/scripts/helper_scripts -maxdepth 1 -type f -executable -exec cp {} ./rust-binaries \;
+          find ./pipeline-source/scripts/helper_scripts -maxdepth 1 -type f -executable -exec cp {} ./rust-binaries \;
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
