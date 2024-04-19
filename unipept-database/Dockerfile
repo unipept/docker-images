@@ -53,7 +53,7 @@ RUN apt update && \
 # Configure curl to use the newly builded libcurl
 #RUN ldconfig
 
-RUN git clone --depth 1 https://github.com/stijndcl/unipept-database && git checkout feature/postgres
+RUN git clone --depth 1 https://github.com/stijndcl/unipept-database && cd unipept-database && git checkout feature/postgres
 COPY "db_entrypoint.sh" "/docker-entrypoint-initdb.d/db_entrypoint.sh"
 
 # Sometimes, these files are copied over from Windows systems and need to be converted into Unix line endings to make
