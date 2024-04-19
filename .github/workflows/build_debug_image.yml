@@ -47,8 +47,8 @@ jobs:
         run: |
           git clone -b feature/postgres --depth 1 https://github.com/stijndcl/unipept-database/ pipeline-source
           bash ./pipeline-source/scripts/build_binaries.sh
-          mkdir unipept-database/rust-binaries
-          find ./pipeline-source/scripts/helper_scripts -maxdepth 1 -type f -executable -exec cp {} unipept-database/rust-binaries \;
+          mkdir rust-binaries
+          find ./pipeline-source/scripts/helper_scripts -maxdepth 1 -type f -executable -exec cp {} ./rust-binaries \;
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
