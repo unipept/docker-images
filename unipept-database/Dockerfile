@@ -62,19 +62,7 @@ RUN dos2unix /unipept-database/scripts/**/*.sh && chmod u+x /unipept-database/sc
 
 RUN echo 'root:unipept' | chpasswd
 
-# Install Rust toolchain (https://rustup.rs/)
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y
-RUN echo 'source $HOME/.cargo/env' >> $HOME/.bashrc
-ENV PATH="/root/.cargo/bin:${PATH}"
-
-# Compile Rust binaries
-RUN /unipept-database/scripts/build_binaries.sh
-
-# Clean up build artifacts so they don't end up in the image
-RUN rm -rf /unipept-database/scripts/helper_scripts/unipept-database-rs/target/
-
-# Uninstall Rust again to keep the image size down
-RUN rustup self uninstall -y
+ADD rust-binaries /unipept-database/scripts/helper_scripts
 
 # Database types that should be processed by this image. Delimited by comma's.
 ENV DB_TYPES swissprot
