@@ -49,9 +49,6 @@ RUN apt update && \
     sudo \
     lz4
 
-RUN useradd unipept
-USER unipept
-
 RUN git clone --depth 1 -b feature/postgres https://github.com/stijndcl/unipept-database
 COPY "db_entrypoint.sh" "/docker-entrypoint-initdb.d/db_entrypoint.sh"
 
