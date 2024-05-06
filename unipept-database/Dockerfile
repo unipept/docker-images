@@ -1,4 +1,4 @@
-FROM mariadb:jammy
+FROM postgres:16.2-bullseye
 
 ###
 # Name: unipept-database
@@ -49,19 +49,13 @@ RUN apt update && \
     sudo \
     lz4
 
-
-# Configure curl to use the newly builded libcurl
-#RUN ldconfig
-
-RUN git clone --depth 1 https://github.com/unipept/unipept-database
+# TODO change to unipept repo once changes are merged to master!
+RUN git clone --depth 1 -b feature/postgres https://github.com/stijndcl/unipept-database
 COPY "db_entrypoint.sh" "/docker-entrypoint-initdb.d/db_entrypoint.sh"
 
 # Sometimes, these files are copied over from Windows systems and need to be converted into Unix line endings to make
 # sure that these can be properly executed by the container.
 RUN dos2unix /unipept-database/scripts/**/*.sh && chmod u+x /unipept-database/scripts/*.sh
-
-COPY "config/custom_mysql_config.cnf" "/etc/mysql/conf.d/custom_mysql_config.cnf"
-RUN chmod a-w "/etc/mysql/conf.d/custom_mysql_config.cnf"
 
 RUN echo 'root:unipept' | chpasswd
 
@@ -92,4 +86,4 @@ ENV VERBOSE false
 
 ENV SORT_MEMORY 2G
 
-EXPOSE 3306
+EXPOSE 5432
