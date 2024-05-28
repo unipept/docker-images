@@ -1,0 +1,7 @@
+[mysqld]
+secure-file-priv = ""
+local-infile=1
+default-authentication-plugin=mysql_native_password
+innodb_buffer_pool_size=2048M
+innodb_flush_log_at_trx_commit = 0
+innodb_file_per_table

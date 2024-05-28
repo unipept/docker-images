@@ -1,0 +1,4 @@
+[submodule "examples/suffix-array-index/suffix-array/unipept-index"]
+	path = examples/suffix-array-index/suffix-array/unipept-index
+	url = https://github.com/unipept/unipept-index.git
+	branch = feature/sa-compression

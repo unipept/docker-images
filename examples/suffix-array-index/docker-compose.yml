@@ -1,0 +1,78 @@
+version: '3.9'
+
+services:
+  mariadb:
+    container_name: database
+    build: 
+      context: ./mariadb
+      no_cache: true
+    environment:
+      MYSQL_ROOT_PASSWORD: unipept
+      MYSQL_DATABASE: unipept
+      MYSQL_USER: unipept
+      MYSQL_PASSWORD: unipept
+      DB_TYPES: swissprot
+      DB_SOURCES: https://ftp.expasy.org/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.dat.gz
+      SORT_MEMORY: 2G
+    restart: always
+    ports:
+      - "3306:3306"
+    hostname: mysql
+    volumes:
+      - type: volume
+        source: mariadb
+        target: /var/lib/mysql
+      - type: volume
+        source: index
+        target: /index
+      - type: volume
+        source: tmp
+        target: /tmp
+    healthcheck:
+      test: "test -f /tmp/tables/.completed"
+      interval: 60s
+      retries: 60
+      
+  suffix-array:
+    container_name: suffix-array
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    build: 
+      context: ./suffix-array
+      no_cache: true
+    environment:
+      SAMPLE_RATE: 3
+      COMPRESSED: true
+    restart: always
+    ports:
+      - "3000:3000"
+    volumes:
+      - type: volume
+        source: suffix-array
+        target: /suffix-array
+      - type: volume
+        source: index
+        target: /index
+      - type: volume
+        source: tmp
+        target: /tmp
+
+  phpmyadmin:
+    container_name: phpmyadmin
+    depends_on:
+      mariadb:
+        condition: service_started
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - '8080:80'
+    environment:
+      PMA_HOST: mariadb
+      MYSQL_ROOT_PASSWORD: unipept
+    restart: always
+
+volumes:
+  mariadb:
+  index:
+  tmp:
+  suffix-array:
