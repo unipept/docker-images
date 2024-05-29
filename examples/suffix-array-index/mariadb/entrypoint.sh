@@ -6,13 +6,11 @@ set -e
 # Exit when a command in one of the pipelines fails
 set -o pipefail
 
-echo "🚀 Start construction of the database!"
-
 echo
 echo "📋 Generating all input files..."
 echo "unipept" | su -c "/unipept-database/scripts/build_database.sh -i '/index' -d '/tmp' -m $SORT_MEMORY suffix-array-index $DB_TYPES $DB_SOURCES '/tmp/tables'" 'root'
 
-echo "unipept" | su -c "touch /tmp/tables/.completed" root
+echo "unipept" | su -c "touch /tmp/tables/.completed" 'root'
 
 echo
 echo "📋 Loading the database tables..."
