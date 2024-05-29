@@ -5,7 +5,7 @@ services:
     container_name: database
     build: 
       context: ./mariadb
-      #no_cache: true
+      no_cache: true
     environment:
       MYSQL_ROOT_PASSWORD: unipept
       MYSQL_DATABASE: unipept
@@ -43,7 +43,7 @@ services:
         condition: service_healthy
     build: 
       context: ./suffix-array
-      #no_cache: true
+      no_cache: true
     environment:
       SAMPLE_RATE: 3
       COMPRESSED: true
