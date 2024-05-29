@@ -5,7 +5,7 @@ services:
     container_name: database
     build: 
       context: ./mariadb
-      no_cache: true
+      #no_cache: true
     environment:
       MYSQL_ROOT_PASSWORD: unipept
       MYSQL_DATABASE: unipept
@@ -23,13 +23,16 @@ services:
         source: mariadb
         target: /var/lib/mysql
       - type: volume
+        source: suffix-array
+        target: /suffix-array
+      - type: volume
         source: index
         target: /index
       - type: volume
         source: tmp
         target: /tmp
     healthcheck:
-      test: "test -f /tmp/tables/.completed"
+      test: "test -f /tmp/tables/.completed || test -f /suffix-array/.completed"
       interval: 60s
       retries: 60
       
@@ -40,7 +43,7 @@ services:
         condition: service_healthy
     build: 
       context: ./suffix-array
-      no_cache: true
+      #no_cache: true
     environment:
       SAMPLE_RATE: 3
       COMPRESSED: true
