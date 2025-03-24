@@ -32,7 +32,7 @@ RUN apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
 
 RUN git clone https://github.com/unipept/unipept-api.git
-RUN cd unipept-api && git checkout main && gem install bundler
+RUN cd unipept-api && git checkout 9d2d719 && gem install bundler
 RUN cd unipept-api/config && printf "  host: host.docker.internal\n  port: 3306\n" >> database.yml
 RUN cd unipept-api && bundle install
 
