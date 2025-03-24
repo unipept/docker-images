@@ -47,7 +47,8 @@ RUN apt update && \
     parallel \
     curl \
     sudo \
-    lz4
+    lz4 \
+    libxml2-utils
 
 
 # Configure curl to use the newly builded libcurl
